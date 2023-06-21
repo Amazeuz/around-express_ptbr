@@ -1,5 +1,6 @@
 const express = require('express');
 const path = require('path');
+const fsPromises = require('fs').promises;
 const bodyParser = require('body-parser');
 const cardsRouter = require('./routes/cards');
 const userRouter = require('./routes/users');
@@ -17,6 +18,4 @@ app.get('*', (req, res) => {
   res.send({ message: 'A solicitação não foi encontrada' });
 });
 
-app.listen(PORT, () => {
-  console.log(`App executando na porta ${PORT}`);
-});
+app.listen(PORT);

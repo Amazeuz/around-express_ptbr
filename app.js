@@ -1,9 +1,11 @@
 const express = require('express');
 const path = require('path');
-const fsPromises = require('fs').promises;
 const bodyParser = require('body-parser');
 const cardsRouter = require('./routes/cards');
 const userRouter = require('./routes/users');
+const mongoose = require('mongoose');
+
+mongoose.connect('mongodb://localhost:27017/aroundb')
 
 const { PORT = 3000 } = process.env;
 

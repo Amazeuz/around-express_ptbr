@@ -1,5 +1,11 @@
 const Card = require('../models/card');
 
+function send404() {
+  const error = new Error('Nenhum cartão encontrado com esse id');
+  error.statusCode = 404;
+  throw error;
+}
+
 module.exports.getAllCards = (req, res) => {
   Card.find({})
     .then((cards) => res.send({ data: cards }))
@@ -9,9 +15,7 @@ module.exports.getAllCards = (req, res) => {
 module.exports.deleteCard = (req, res) => {
   Card.findByIdAndRemove(req.params.cardId)
     .orFail(() => {
-      const error = new Error('Nenhum cartão encontrado com esse id');
-      error.statusCode = 404;
-      throw error;
+      send404();
     })
     .then((card) => res.send({ data: card }))
     .catch((err) => {
@@ -45,9 +49,7 @@ module.exports.likeCard = (req, res) => {
     { new: true },
   )
     .orFail(() => {
-      const error = new Error('Nenhum cartão encontrado com esse id');
-      error.statusCode = 404;
-      throw error;
+      send404();
     })
     .then((card) => res.send({ data: card }))
     .catch((err) => {
@@ -66,9 +68,7 @@ module.exports.dislikeCard = (req, res) => {
     { new: true },
   )
     .orFail(() => {
-      const error = new Error('Nenhum cartão encontrado com esse id');
-      error.statusCode = 404;
-      throw error;
+      send404();
     })
     .then((card) => res.send({ data: card }))
     .catch((err) => {

@@ -1,5 +1,11 @@
 const User = require('../models/user');
 
+function send404() {
+  const error = new Error('Nenhum usuário encontrado com esse id');
+  error.statusCode = 404;
+  throw error;
+}
+
 module.exports.getAllUsers = (req, res) => {
   User.find({})
     .then((users) => res.send({ data: users }))
@@ -9,9 +15,7 @@ module.exports.getAllUsers = (req, res) => {
 module.exports.getUser = (req, res) => {
   User.findById(req.params.id)
     .orFail(() => {
-      const error = new Error('Nenhum usuário encontrado com esse id');
-      error.statusCode = 404;
-      throw error;
+      send404();
     })
     .then((user) => res.send({ data: user }))
     .catch((err) => {
@@ -46,9 +50,7 @@ module.exports.updateUser = (req, res) => {
     { new: true },
   )
     .orFail(() => {
-      const error = new Error('Nenhum usuário encontrado com esse id');
-      error.statusCode = 404;
-      throw error;
+      send404();
     })
     .then((user) => res.send({ data: user }))
     .catch((err) => {
@@ -69,9 +71,7 @@ module.exports.updateUserAvatar = (req, res) => {
     { new: true, runValidators: true },
   )
     .orFail(() => {
-      const error = new Error('Nenhum usuário encontrado com esse id');
-      error.statusCode = 404;
-      throw error;
+      send404();
     })
     .then((user) => res.send({ data: user.avatar }))
     .catch((err) => {

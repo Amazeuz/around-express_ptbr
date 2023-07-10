@@ -6,13 +6,13 @@ function send404() {
   throw error;
 }
 
-module.exports.getAllCards = (req, res) => {
+const getAllCards = (req, res) => {
   Card.find({})
     .then((cards) => res.send({ data: cards }))
     .catch((err) => res.status(500).send({ message: `Ocorreu um erro ao carregar todos os cartões: ${err}` }));
 };
 
-module.exports.deleteCard = (req, res) => {
+const deleteCard = (req, res) => {
   Card.findByIdAndRemove(req.params.cardId)
     .orFail(() => {
       send404();
@@ -29,7 +29,7 @@ module.exports.deleteCard = (req, res) => {
     });
 };
 
-module.exports.createCard = (req, res) => {
+const createCard = (req, res) => {
   const { name, link } = req.body;
 
   Card.create({ name, link, owner: req.user._id })
@@ -42,7 +42,7 @@ module.exports.createCard = (req, res) => {
     });
 };
 
-module.exports.likeCard = (req, res) => {
+const likeCard = (req, res) => {
   Card.findByIdAndUpdate(
     req.params.cardId,
     { $addToSet: { likes: req.user._id } },
@@ -61,7 +61,7 @@ module.exports.likeCard = (req, res) => {
     });
 };
 
-module.exports.dislikeCard = (req, res) => {
+const dislikeCard = (req, res) => {
   Card.findByIdAndUpdate(
     req.params.cardId,
     { $pull: { likes: req.user._id } },
@@ -78,4 +78,8 @@ module.exports.dislikeCard = (req, res) => {
         res.status(500).send({ message: `Não foi possível descurtir o cartão: ${err}` });
       }
     });
+};
+
+module.exports = {
+  getAllCards, deleteCard, createCard, likeCard, dislikeCard,
 };

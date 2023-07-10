@@ -7,12 +7,8 @@ const userRouter = require('./routes/users');
 
 const { PORT = 3000 } = process.env;
 
-mongoose.connect('mongodb://127.0.0.1:27017/aroundb')
-  .catch((err) => console.error(`Erro de conexão ao MongoDB: ${err}`));
-
 const app = express();
 app.use(express.static(path.join(__dirname, 'public')));
-app.use(bodyParser.urlencoded({ extended: true }));
 app.use(express.json());
 
 app.use((req, res, next) => {
@@ -23,11 +19,16 @@ app.use((req, res, next) => {
   next();
 });
 
-app.use('/cards', cardsRouter);
-app.use('/users', userRouter);
+app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({ extended: true }));
+app.use('/', cardsRouter);
+app.use('/', userRouter);
 
 app.get('*', (req, res) => {
   res.send({ message: 'A solicitação não foi encontrada' });
 });
+
+mongoose.connect('mongodb://localhost:27017/aroundb')
+  .catch((err) => console.error(`Erro de conexão ao MongoDB: ${err}`));
 
 app.listen(PORT);

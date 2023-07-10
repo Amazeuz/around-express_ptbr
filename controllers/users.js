@@ -6,13 +6,13 @@ function send404() {
   throw error;
 }
 
-module.exports.getAllUsers = (req, res) => {
+const getAllUsers = (req, res) => {
   User.find({})
     .then((users) => res.send({ data: users }))
     .catch((err) => res.status(500).send({ message: `Ocorreu um erro ao carregar todos os usuários: ${err}` }));
 };
 
-module.exports.getUser = (req, res) => {
+const getUser = (req, res) => {
   User.findById(req.params.id)
     .orFail(() => {
       send404();
@@ -29,7 +29,7 @@ module.exports.getUser = (req, res) => {
     });
 };
 
-module.exports.createUser = (req, res) => {
+const createUser = (req, res) => {
   const { name, about, avatar } = req.body;
 
   User.create({ name, about, avatar })
@@ -43,7 +43,7 @@ module.exports.createUser = (req, res) => {
     });
 };
 
-module.exports.updateUser = (req, res) => {
+const updateUser = (req, res) => {
   User.findByIdAndUpdate(
     req.user._id,
     { name: req.body.name, about: req.body.about },
@@ -64,7 +64,7 @@ module.exports.updateUser = (req, res) => {
     });
 };
 
-module.exports.updateUserAvatar = (req, res) => {
+const updateUserAvatar = (req, res) => {
   User.findByIdAndUpdate(
     req.user._id,
     { avatar: req.body.avatar },
@@ -83,4 +83,8 @@ module.exports.updateUserAvatar = (req, res) => {
         res.status(500).send({ message: `Erro ao atualizar avatar do usuário: ${err}` });
       }
     });
+};
+
+module.exports = {
+  getAllUsers, getUser, createUser, updateUser, updateUserAvatar,
 };

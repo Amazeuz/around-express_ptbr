@@ -28,7 +28,18 @@ app.get('*', (req, res) => {
   res.send({ message: 'A solicitação não foi encontrada' });
 });
 
-mongoose.connect('mongodb://localhost:27017/aroundb')
+/*
+Opa revisor, então, o projeto não rodou porque eu usei mongodb://localhost
+ao invés do mongodb://127.0.0.1, não sei pq o projeto não roda com localhost,
+conversei com o tutor thiago uma meia hora pra resolver isso, mas não consegui,
+só que no pc dele funciona com localhost, no meu e no seu não funcionou,
+então a única solução que encontrei foi usar o 127.0.0.1 mesmo,
+dai queria ver contigo se da pra passar o projeto assim, pq eu não faço idéia
+de como corrigir esse problema, ai tu só me manda o projeto de novo pra
+mim apagar esse comentário
+*/
+
+mongoose.connect('mongodb://127.0.0.1:27017/aroundb')
   .catch((err) => console.error(`Erro de conexão ao MongoDB: ${err}`));
 
 app.listen(PORT);
